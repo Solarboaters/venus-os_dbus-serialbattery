@@ -114,6 +114,10 @@ class Daly(Battery):
         self.read_capacity(ser)
         self.read_production_date(ser)
 
+        # D-Bus registers cell paths before the first voltage refresh.
+        if self.cell_count is not None and self.cell_count > 0 and len(self.cells) != self.cell_count:
+            self.cells = [Cell(True) for _ in range(self.cell_count)]
+
         return True
 
     def refresh_data(self):
